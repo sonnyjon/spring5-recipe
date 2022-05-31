@@ -1,6 +1,7 @@
-package dev.sonnyjon.spring5recipe.domain;
+package dev.sonnyjon.spring5recipe.model;
 
 import javax.persistence.*;
+import java.util.Set;
 
 /**
  * Created by Sonny on 5/31/2022.
@@ -20,8 +21,11 @@ public class Recipe
     private String url;
     private String directions;
 
-    // TODO Add
+    // TODO Difficulty
     // private Difficulty difficulty;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
+    private Set<Ingredient> ingredients;
 
     @Lob
     private Byte[] image;
@@ -127,5 +131,15 @@ public class Recipe
     public void setNotes(Notes notes)
     {
         this.notes = notes;
+    }
+
+    public Set<Ingredient> getIngredients()
+    {
+        return ingredients;
+    }
+
+    public void setIngredients(Set<Ingredient> ingredients)
+    {
+        this.ingredients = ingredients;
     }
 }

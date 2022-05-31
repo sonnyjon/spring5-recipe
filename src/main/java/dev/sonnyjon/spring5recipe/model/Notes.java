@@ -1,4 +1,4 @@
-package dev.sonnyjon.spring5recipe.domain;
+package dev.sonnyjon.spring5recipe.model;
 
 import javax.persistence.*;
 

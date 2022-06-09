@@ -1,5 +1,6 @@
 package dev.sonnyjon.spring5recipe.services;
 
+import dev.sonnyjon.spring5recipe.commands.RecipeCommand;
 import dev.sonnyjon.spring5recipe.model.Recipe;
 
 import java.util.Set;
@@ -12,4 +13,6 @@ public interface RecipeService
     Set<Recipe> getRecipes();
 
     Recipe findById(Long id);
+
+    RecipeCommand saveRecipeCommand(RecipeCommand command);
 }

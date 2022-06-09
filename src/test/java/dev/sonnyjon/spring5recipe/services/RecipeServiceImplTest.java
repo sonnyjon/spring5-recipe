@@ -1,5 +1,7 @@
 package dev.sonnyjon.spring5recipe.services;
 
+import dev.sonnyjon.spring5recipe.converters.RecipeCommandToRecipe;
+import dev.sonnyjon.spring5recipe.converters.RecipeToRecipeCommand;
 import dev.sonnyjon.spring5recipe.model.Recipe;
 import dev.sonnyjon.spring5recipe.repos.RecipeRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -26,13 +28,19 @@ class RecipeServiceImplTest
     @Mock
     RecipeRepository recipeRepository;
 
+    @Mock
+    RecipeToRecipeCommand recipeToRecipeCommand;
+
+    @Mock
+    RecipeCommandToRecipe recipeCommandToRecipe;
+
     AutoCloseable mocks;
 
     @BeforeEach
     void setUp()
     {
         mocks = MockitoAnnotations.openMocks(this);
-        recipeService = new RecipeServiceImpl(recipeRepository);
+        recipeService = new RecipeServiceImpl(recipeRepository, recipeCommandToRecipe, recipeToRecipeCommand);
     }
 
     @AfterEach

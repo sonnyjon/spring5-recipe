@@ -1,5 +1,7 @@
 package dev.sonnyjon.spring5recipe.controllers;
 
+import dev.sonnyjon.spring5recipe.commands.IngredientCommand;
+import dev.sonnyjon.spring5recipe.services.IngredientService;
 import dev.sonnyjon.spring5recipe.services.RecipeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -16,10 +18,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class IngredientController
 {
     private final RecipeService recipeService;
+    private final IngredientService ingredientService;
 
-    public IngredientController(RecipeService recipeService)
+    public IngredientController(RecipeService recipeService, IngredientService ingredientService)
     {
         this.recipeService = recipeService;
+        this.ingredientService = ingredientService;
     }
 
     @GetMapping
@@ -31,5 +35,16 @@ public class IngredientController
         // use command object to avoid lazy load errors in Thymeleaf.
         model.addAttribute("recipe", recipeService.findCommandById(Long.valueOf(recipeId)));
         return "recipe/ingredient/list";
+    }
+
+    @GetMapping
+    @RequestMapping("recipe/{recipeId}/ingredient/{id}/show")
+    public String showRecipeIngredient(@PathVariable String recipeId,
+                                       @PathVariable String id,
+                                       Model model)
+    {
+        IngredientCommand ingredient = ingredientService.findByRecipeIdAndIngredientId(Long.valueOf(recipeId), Long.valueOf(id));
+        model.addAttribute("ingredient", ingredient);
+        return "recipe/ingredient/show";
     }
 }

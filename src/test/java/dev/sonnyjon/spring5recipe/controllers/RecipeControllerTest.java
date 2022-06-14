@@ -1,6 +1,7 @@
 package dev.sonnyjon.spring5recipe.controllers;
 
 import dev.sonnyjon.spring5recipe.commands.RecipeCommand;
+import dev.sonnyjon.spring5recipe.exceptions.NotFoundException;
 import dev.sonnyjon.spring5recipe.model.Recipe;
 import dev.sonnyjon.spring5recipe.services.RecipeService;
 import org.junit.jupiter.api.AfterEach;
@@ -57,6 +58,18 @@ class RecipeControllerTest
                 .andExpect(status().isOk())
                 .andExpect(view().name("recipe/show"))
                 .andExpect(model().attributeExists("recipe"));
+    }
+
+    @Test
+    void testGetRecipeNotFound() throws Exception
+    {
+        Recipe recipe = new Recipe();
+        recipe.setId(1L);
+
+        when(service.findById(anyLong())).thenThrow(NotFoundException.class);
+
+        mockMvc.perform(get("/recipe/1/show"))
+                .andExpect(status().isNotFound());
     }
 
     @Test

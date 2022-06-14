@@ -2,9 +2,11 @@ package dev.sonnyjon.spring5recipe.services;
 
 import dev.sonnyjon.spring5recipe.converters.RecipeCommandToRecipe;
 import dev.sonnyjon.spring5recipe.converters.RecipeToRecipeCommand;
+import dev.sonnyjon.spring5recipe.exceptions.NotFoundException;
 import dev.sonnyjon.spring5recipe.model.Recipe;
 import dev.sonnyjon.spring5recipe.repos.RecipeRepository;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -62,6 +64,17 @@ class RecipeServiceImplTest
         assertNotNull(returned,"Null Recipe returned");
         verify(recipeRepository, times(1)).findById(1L);
         verify(recipeRepository, never()).findAll();
+    }
+
+    @Test()
+    public void getRecipeByIdTestNotFound()
+    {
+        Optional<Recipe> recipeOptional = Optional.empty();
+        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+
+        Assertions.assertThrows(NotFoundException.class, () -> {
+            Recipe recipeReturned = recipeService.findById(1L);
+        });
     }
 
     @Test

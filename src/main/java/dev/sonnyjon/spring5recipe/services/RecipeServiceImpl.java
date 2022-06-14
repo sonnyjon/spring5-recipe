@@ -3,6 +3,7 @@ package dev.sonnyjon.spring5recipe.services;
 import dev.sonnyjon.spring5recipe.commands.RecipeCommand;
 import dev.sonnyjon.spring5recipe.converters.RecipeCommandToRecipe;
 import dev.sonnyjon.spring5recipe.converters.RecipeToRecipeCommand;
+import dev.sonnyjon.spring5recipe.exceptions.NotFoundException;
 import dev.sonnyjon.spring5recipe.model.Recipe;
 import dev.sonnyjon.spring5recipe.repos.RecipeRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -48,7 +49,7 @@ public class RecipeServiceImpl implements RecipeService
     {
         Optional<Recipe> optional = recipeRepository.findById(id);
 
-        if (optional.isEmpty()) throw new RuntimeException("Recipe Not Found!");
+        if (optional.isEmpty()) throw new NotFoundException("Recipe Not Found!");
 
         return optional.get();
     }

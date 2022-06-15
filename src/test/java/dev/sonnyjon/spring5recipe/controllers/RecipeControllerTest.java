@@ -60,6 +60,18 @@ class RecipeControllerTest
                 .andExpect(model().attributeExists("recipe"));
     }
 
+    /**************************************************************************
+     *  When given a non-numerical given for the recipe id, the system should
+     *  throw a NumberFormatException
+     */
+    @Test
+    void testShowRecipe_NonNumberId_ShouldThrowException() throws Exception
+    {
+        mockMvc.perform(get("/recipe/abc/show"))
+                .andExpect(status().isBadRequest())
+                .andExpect(view().name("400error"));
+    }
+
     @Test
     void testGetRecipeNotFound() throws Exception
     {

@@ -37,7 +37,6 @@ class RecipeControllerTest
     {
         mocks = MockitoAnnotations.openMocks(this);
         controller = new RecipeController(service);
-
         mockMvc = MockMvcBuilders.standaloneSetup(controller)
                                 .setControllerAdvice(new ControllerExceptionHandler())
                                 .build();
@@ -63,6 +62,16 @@ class RecipeControllerTest
                 .andExpect(model().attributeExists("recipe"));
     }
 
+    @Test
+    void testGetRecipeNotFound() throws Exception
+    {
+        when(service.findById(anyLong())).thenThrow(NotFoundException.class);
+
+        mockMvc.perform(get("/recipe/1/show"))
+                .andExpect(status().isNotFound())
+                .andExpect(view().name("404error"));
+    }
+
     /**************************************************************************
      *  When given a non-numerical given for the recipe id, the system should
      *  throw a NumberFormatException
@@ -73,19 +82,6 @@ class RecipeControllerTest
         mockMvc.perform(get("/recipe/abc/show"))
                 .andExpect(status().isBadRequest())
                 .andExpect(view().name("400error"));
-    }
-
-    @Test
-    void testGetRecipeNotFound() throws Exception
-    {
-        Recipe recipe = new Recipe();
-        recipe.setId(1L);
-
-        when(service.findById(anyLong())).thenThrow(NotFoundException.class);
-
-        mockMvc.perform(get("/recipe/1/show"))
-                .andExpect(status().isNotFound())
-                .andExpect(view().name("404error"));
     }
 
     @Test
@@ -107,7 +103,8 @@ class RecipeControllerTest
 
         when(service.saveRecipeCommand(any())).thenReturn(command);
 
-        mockMvc.perform(post("/recipe")
+        mockMvc.perform(
+                    post("/recipe")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .param("id", "")
                         .param("description", "some string")
@@ -125,7 +122,8 @@ class RecipeControllerTest
 
         when(service.saveRecipeCommand(any())).thenReturn(command);
 
-        mockMvc.perform(post("/recipe")
+        mockMvc.perform(
+                    post("/recipe")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .param("id", "")
 

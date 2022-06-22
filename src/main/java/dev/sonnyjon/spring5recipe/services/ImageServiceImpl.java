@@ -46,4 +46,5 @@ public class ImageServiceImpl implements ImageService
             log.error("Error occurred", e);
             e.printStackTrace();
         }
-    }}
+    }
+}

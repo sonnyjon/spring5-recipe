@@ -5,5 +5,5 @@ package dev.sonnyjon.spring5recipe.model;
  */
 public enum Difficulty
 {
-    EASY, MODERATE, HARD
+    EASY, MODERATE, KIND_OF_HARD, HARD
 }

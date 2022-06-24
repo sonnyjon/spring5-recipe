@@ -8,7 +8,8 @@ import java.math.BigDecimal;
 /**
  * Created by Sonny on 5/31/2022.
  */
-@Data
+@Getter
+@Setter
 @EqualsAndHashCode(exclude = {"recipe"})
 @Entity
 public class Ingredient
@@ -27,9 +28,8 @@ public class Ingredient
 
     public Ingredient() {}
 
-    public Ingredient(Long id, String description, BigDecimal amount, UnitOfMeasure uom)
+    public Ingredient(String description, BigDecimal amount, UnitOfMeasure uom)
     {
-        this.id = id;
         this.description = description;
         this.amount = amount;
         this.uom = uom;

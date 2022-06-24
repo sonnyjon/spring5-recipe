@@ -33,11 +33,12 @@ class IndexControllerTest
     Model model;
 
     IndexController controller;
+    AutoCloseable mocks;
 
     @BeforeEach
     void setUp()
     {
-        MockitoAnnotations.initMocks(this);
+        mocks = MockitoAnnotations.openMocks(this);
         controller = new IndexController(recipeService);
     }
 
@@ -55,8 +56,9 @@ class IndexControllerTest
     {
         //given
         Set<Recipe> recipes = new HashSet<>();
+
         Recipe recipe = new Recipe();
-        recipe.setId(1l);
+        recipe.setId(1L);
         recipes.add(recipe);
 
         recipe = new Recipe();
@@ -66,6 +68,7 @@ class IndexControllerTest
         when(recipeService.getRecipes()).thenReturn(recipes);
 
         ArgumentCaptor<Set<Recipe>> argumentCaptor = ArgumentCaptor.forClass(Set.class);
+
         //when
         String viewName = controller.getIndexPage(model);
 
